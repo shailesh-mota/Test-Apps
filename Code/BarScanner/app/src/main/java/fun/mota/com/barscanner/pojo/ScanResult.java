@@ -1,4 +1,4 @@
-package fun.mota.com.barscanner;
+package fun.mota.com.barscanner.pojo;
 
 /**
  * Created by shaileshmota on 26/01/2017.
