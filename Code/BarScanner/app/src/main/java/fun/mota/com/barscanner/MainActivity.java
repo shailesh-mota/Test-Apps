@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             ScanResult scanResult = new ScanResult();
             scanResult.setContent(result.getContents());
             scanResult.setFormat(result.getFormatName());
-            // TODO post CommandEvent.UPLOAD_SCAN_RESULTS instead to a background thread
+            // Publish the scan results to subscribers
             EventBus.getDefault().post(scanResult);
         } else {
             // TODO : Some UI way to display null result, maybe a toast
