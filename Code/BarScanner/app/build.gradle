@@ -31,4 +31,5 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     //TODO use 2.1.0
     compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.okhttp:okhttp:2.7.4'
 }
