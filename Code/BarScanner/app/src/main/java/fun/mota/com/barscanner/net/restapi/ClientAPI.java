@@ -9,17 +9,18 @@ import retrofit.http.Path;
 
 /**
  * Created by shaileshmota on 27/01/2017.
+ * All the client APIs used within the code.
  */
 
 public interface ClientAPI {
-    // TODO change this path to the end point
+    // TODO change this path to the correct path
     String PATH="/api/test-app/{productId}";
 
     String UPLOAD_SCAN_ENDPOINT="/upload/scan";
     @POST(PATH+UPLOAD_SCAN_ENDPOINT)
     EmptyPojo uploadScanResult(@Path("productId") String productID, @Body ScanResult result);
 
-    //TODO add a new end point : to upload user data
+    //TODO add a new path : to upload user data
     /*
     String UPLOAD_SCAN_ENDPOINT="/upload/scan";
     @POST(PATH+UPLOAD_SCAN_ENDPOINT)
