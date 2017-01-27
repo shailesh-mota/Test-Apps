@@ -16,6 +16,7 @@ public interface ClientAPI {
     // TODO change this path to the correct path
     String PATH="/api/test-app/{productId}";
 
+    //TODO server response must be stored in an apropriate POJO
     String UPLOAD_SCAN_ENDPOINT="/upload/scan";
     @POST(PATH+UPLOAD_SCAN_ENDPOINT)
     EmptyPojo uploadScanResult(@Path("productId") String productID, @Body ScanResult result);
