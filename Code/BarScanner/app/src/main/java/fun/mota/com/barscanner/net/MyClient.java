@@ -17,11 +17,11 @@ import fun.mota.com.barscanner.pojo.ScanResult;
 public class MyClient implements NetworkService.Client {
     private static final String TAG = "Cient";
     private final NetworkService.ClientService cs;
-    //private final ClientAPI API;
+    private final ClientAPI API;
 
     public MyClient(final NetworkService.ClientService cs) {
         this.cs = cs;
-        //this.API = //TODO create API in netservice
+        this.API = NetworkService.generateAPI(new HttpConnection(), cs, ClientAPI.class);
     }
 
     @Override

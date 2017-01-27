@@ -11,6 +11,7 @@ import android.util.Log;
 
 import java.util.concurrent.atomic.AtomicReference;
 import fun.mota.com.barscanner.R;
+import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -22,6 +23,13 @@ import retrofit.client.Response;
 public class NetworkService extends Service{
     private Handler handler;
     private final AtomicReference<MyClient> currentClient = new AtomicReference<>();
+    private static final RestAdapter.LogLevel REST_LOG_LEVEL = RestAdapter.LogLevel.FULL;
+
+    public static <T> T generateAPI(HttpConnection conn, final ClientService cs, Class<T> apiClass) {
+        RestAdapter rad = new RestAdapter.Builder().setEndpoint(new Endpoint(cs.getAppContext())).setClient(conn)
+                .setErrorHandler(cs.getErrorHandler()).setLogLevel(NetworkService.REST_LOG_LEVEL).build();
+        return rad.create(apiClass);
+    }
 
     @Override
     public void onCreate() {
