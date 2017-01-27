@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,6 +13,10 @@ import android.view.MenuItem;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import org.greenrobot.eventbus.EventBus;
+
+import fun.mota.com.barscanner.pojo.ScanResult;
 
 public class MainActivity extends AppCompatActivity {
     // Holds the app context to pass around
@@ -40,9 +43,22 @@ public class MainActivity extends AppCompatActivity {
         init();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //Unregister with EventBus
+        if(EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    //initializations
     private void init() {
-        // Initializations
         // TODO store/retrieve the last successful scan result from DB into
+        //Register with EventBus
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -88,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
             ScanResult scanResult = new ScanResult();
             scanResult.setContent(result.getContents());
             scanResult.setFormat(result.getFormatName());
+            // TODO post CommandEvent.UPLOAD_SCAN_RESULTS instead to a background thread
+            EventBus.getDefault().post(scanResult);
         } else {
             // TODO : Some UI way to display null result, maybe a toast
             Log.i("Mota", "No Result");
