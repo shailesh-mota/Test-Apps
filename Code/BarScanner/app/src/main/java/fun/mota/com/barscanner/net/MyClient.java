@@ -8,6 +8,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import fun.mota.com.barscanner.event.CommandEvent;
 import fun.mota.com.barscanner.net.restapi.ClientAPI;
+import fun.mota.com.barscanner.pojo.EmptyPojo;
 import fun.mota.com.barscanner.pojo.ScanResult;
 
 /**
@@ -15,7 +16,7 @@ import fun.mota.com.barscanner.pojo.ScanResult;
  */
 
 public class MyClient implements NetworkService.Client {
-    private static final String TAG = "Cient";
+    private static final String TAG = "Client";
     private final NetworkService.ClientService cs;
     private final ClientAPI API;
 
@@ -60,6 +61,13 @@ public class MyClient implements NetworkService.Client {
     }
 
     private void uploadScanResult(ScanResult result) {
-        // TODO use the API to upload result
+        try{
+            EmptyPojo empty = API.uploadScanResult(cs.getProductName(), result);
+        } catch (Exception e) {
+            Log.d(TAG, "Connection Error" + e.getMessage());
+        }
+
+        // TODO check the response from server and inform UI accordingly with UPLOAD_SCAN_RESULT_SUCCESS/UPLOAD_SCAN_RESULT_FAILURE
+
     }
 }
