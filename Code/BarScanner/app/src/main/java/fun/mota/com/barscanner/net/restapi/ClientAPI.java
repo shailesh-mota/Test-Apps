@@ -2,9 +2,10 @@ package fun.mota.com.barscanner.net.restapi;
 
 import fun.mota.com.barscanner.pojo.EmptyPojo;
 import fun.mota.com.barscanner.pojo.ScanResult;
-import retrofit2.http.Body;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
+import retrofit.http.Body;
+import retrofit.http.POST;
+import retrofit.http.Path;
+
 
 /**
  * Created by shaileshmota on 27/01/2017.
