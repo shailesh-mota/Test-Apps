@@ -9,7 +9,6 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 
-import org.greenrobot.eventbus.EventBus;
 import java.util.concurrent.atomic.AtomicReference;
 import fun.mota.com.barscanner.R;
 import retrofit.RetrofitError;
@@ -22,7 +21,7 @@ import retrofit.client.Response;
 
 public class NetworkService extends Service{
     private Handler handler;
-    private final AtomicReference<Client> currentClient = new AtomicReference<>();
+    private final AtomicReference<MyClient> currentClient = new AtomicReference<>();
 
     @Override
     public void onCreate() {
@@ -34,6 +33,26 @@ public class NetworkService extends Service{
         Looper serviceLooper = thread.getLooper();
         this.handler = new Handler(serviceLooper);
 
+        startClient();
+
+    }
+
+    private void startClient() {
+
+        Runnable task = new Runnable() {
+            public void run() {
+                try {
+                    ClientService cs = new CService();
+                    Client client = new MyClient(cs);
+                    currentClient.set((MyClient)client);
+                    client.start();
+                } catch (RuntimeException e) {
+                    // quit at this point
+                    System.exit(0);
+                }
+            }
+        };
+        handler.post(task);
     }
 
     @Override
@@ -64,16 +83,16 @@ public class NetworkService extends Service{
 
         Handler getHandler();
 
-        void setClient(Client client);
+        void setClient(MyClient client);
 
         retrofit.ErrorHandler getErrorHandler();
     }
 
-    private class Service implements ClientService, retrofit.ErrorHandler {
+    private class CService implements ClientService, retrofit.ErrorHandler {
 
         private final String productName;
 
-        public Service() {
+        public CService() {
             this.productName = getString(R.string.product);
         }
 
@@ -93,8 +112,8 @@ public class NetworkService extends Service{
         }
 
         @Override
-        public void setClient(Client client) {
-            Client oldClient = currentClient.getAndSet(client);
+        public void setClient(MyClient client) {
+            MyClient oldClient = currentClient.getAndSet(client);
             if (oldClient != null) {
                 oldClient.finish();
             }
