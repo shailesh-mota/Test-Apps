@@ -16,6 +16,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import org.greenrobot.eventbus.EventBus;
 
+import fun.mota.com.barscanner.net.NetworkService;
 import fun.mota.com.barscanner.pojo.ScanResult;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this.getApplicationContext();
+        startService(new Intent(MainActivity.this, NetworkService.class));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,19 +48,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        //Unregister with EventBus
-        if(EventBus.getDefault().isRegistered(this)){
-            EventBus.getDefault().unregister(this);
-        }
     }
 
     //initializations
     private void init() {
         // TODO store/retrieve the last successful scan result from DB into
-        //Register with EventBus
-        if(!EventBus.getDefault().isRegistered(this)){
-            EventBus.getDefault().register(this);
-        }
     }
 
     @Override
