@@ -15,7 +15,10 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
+import fun.mota.com.barscanner.event.CommandEvent;
 import fun.mota.com.barscanner.net.NetworkService;
 import fun.mota.com.barscanner.pojo.ScanResult;
 
@@ -46,8 +49,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     //initializations
@@ -103,6 +117,21 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // TODO : Some UI way to display null result, maybe a toast
             Log.i("Mota", "No Result");
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onEvent(CommandEvent event) {
+        switch((CommandEvent.Type)event.getType()){
+            case UPLOAD_SCAN_RESULT_SUCCESS:
+                // TODO apropriate UI notify
+                break;
+            case UPLOAD_SCAN_RESULT_FAILED:
+                // TODO apropriate UI notify
+                break;
+            default:
+                // do nothing
+                break;
         }
     }
 }
