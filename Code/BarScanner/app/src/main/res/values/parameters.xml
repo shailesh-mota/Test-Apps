@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="product">demo</string>
-    <string name="server">127.0.0.1:8080</string>
+    <string name="server">https://IP:PORT</string>
     <integer name="timeout_connection">50000</integer>
     <integer name="timeout_read">50000</integer>
 </resources>
