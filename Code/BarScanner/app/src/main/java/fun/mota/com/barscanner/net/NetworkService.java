@@ -135,11 +135,13 @@ public class NetworkService extends Service{
 
         @Override
         public Throwable handleError(RetrofitError err) {
-            Response resp = err.getResponse();
-            // TODO inform UI based on error codes ?
-            Log.v("Error :", "err: " + resp.toString());
+            if(err != null) {
+                Response resp = err.getResponse();
+                // TODO inform UI based on error codes ?
+                Log.v("Error :", "err: " + resp.toString());
 
-            return err;
+                return err;
+            }
         }
     }
 
